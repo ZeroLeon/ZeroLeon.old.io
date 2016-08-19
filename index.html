@@ -18,28 +18,14 @@
 <div class="row-fluid">
         </div>
     </div>
-    <div class="container">
-        <div class="col-md-4"><img src="assets/img/即刻（字）.png"></div>
-        <div class="col-md-8">
+    <div class="container-fluid">
+        <div class="col-md-2"><img src="assets/img/即刻（字）.png"></div>
+        <div class="col-md-6">
             <h1 class="text-center text-primary bg-primary">新主题讨论会の倒计时</h1></div>
     </div>
-    <div class="clock-builder-output"></div>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script type="text/javascript" src="clock_assets/flipclock.js"></script>
-    <style text="text/css">body .flip-clock-wrapper ul li a div div.inn, body .flip-clock-small-wrapper ul li a div div.inn { color: #CCCCCC; background-color: #333333; } body .flip-clock-dot, body .flip-clock-small-wrapper .flip-clock-dot { background: #323434; } body .flip-clock-wrapper .flip-clock-meridium a, body .flip-clock-small-wrapper .flip-clock-meridium a { color: #323434; }</style>
-    <script type="text/javascript">
-    $(function(){
-    FlipClock.Lang.Custom = { days:'Days', hours:'Hours', minutes:'Minutes', seconds:'Seconds' };
-    var opts = {
-        clockFace: 'DailyCounter',
-        countdown: true,
-        language: 'Custom'
-    };  
-    var countdown = 1471595400 - ((new Date().getTime())/1000); // from: 08/19/2016 04:30 pm +0800
-    countdown = Math.max(1, countdown);
-    $('.clock-builder-output').FlipClock(countdown, opts);
-});
-</script>
+    <div class="col-md-4">
+    <iframe width="430" height="221" src="https://w2.countingdownto.com/1492210" frameborder="0"></iframe>
+    </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -61,7 +47,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <iframe width="700" height="360" src="https://w2.countingdownto.com/1492210" frameborder="0"></iframe>
+                
 
             </div>
         </div>
