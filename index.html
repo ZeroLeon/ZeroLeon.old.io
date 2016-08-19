@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新主题讨论会の倒计时</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="assets/css/Basic-fancyBox-Gallery.css">
+    <link rel="stylesheet" href="assets/css/Pretty-Header.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link type="text/css" rel="stylesheet" href="clock_assets/flipclock.css" />
+</head>
+
+<body>
+<div class="row-fluid">
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-md-4"><img src="assets/img/即刻（字）.png"></div>
+        <div class="col-md-8">
+            <h1 class="text-center text-primary bg-primary">新主题讨论会の倒计时</h1></div>
+    </div>
+    <div class="clock-builder-output"></div>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="clock_assets/flipclock.js"></script>
+    <style text="text/css">body .flip-clock-wrapper ul li a div div.inn, body .flip-clock-small-wrapper ul li a div div.inn { color: #CCCCCC; background-color: #333333; } body .flip-clock-dot, body .flip-clock-small-wrapper .flip-clock-dot { background: #323434; } body .flip-clock-wrapper .flip-clock-meridium a, body .flip-clock-small-wrapper .flip-clock-meridium a { color: #323434; }</style>
+    <script type="text/javascript">
+    $(function(){
+    FlipClock.Lang.Custom = { days:'Days', hours:'Hours', minutes:'Minutes', seconds:'Seconds' };
+    var opts = {
+        clockFace: 'DailyCounter',
+        countdown: true,
+        language: 'Custom'
+    };  
+    var countdown = 1471595400 - ((new Date().getTime())/1000); // from: 08/19/2016 04:30 pm +0800
+    countdown = Math.max(1, countdown);
+    $('.clock-builder-output').FlipClock(countdown, opts);
+});
+</script>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="carousel slide" data-ride="carousel" id="carousel-1">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active"><img src="assets/img/紧张3.png" alt="Slide Image"></div>
+                        <div class="item"><img class="img-responsive" src="assets/img/团结3.png" alt="Slide Image"></div>
+                        <div class="item"><img class="img-responsive" src="assets/img/严肃3.png" alt="Slide Image"></div>
+                        <div class="item"><img src="assets/img/活泼3.png" alt="Slide Image"></div>
+                    </div>
+                    <div><a class="left carousel-control" href="#carousel-1" role="button" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i><span class="sr-only">Previous</span></a><a class="right carousel-control" href="#carousel-1" role="button"
+                        data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i><span class="sr-only">Next</span></a></div>
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-1" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-1" data-slide-to="1"></li>
+                        <li data-target="#carousel-1" data-slide-to="2"></li>
+                        <li data-target="#carousel-1" data-slide-to="3"></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <blockquote>
+                    <p>在热闹时，要懂得热闹；在寂寞时，要懂得升华。人的生活分成两部分，热闹的时候少，孤独的时候多。热闹时候多、孤独时候少的人通常都是没思想的人。我们现在虽然在一个热闹的场所，大家在一起玩，一起开会，但是更多的时候你是一个人。一个人的时候，要让自己善于思考，让自己在孤独的时候读书，打坐。打坐在英文中是meditation，实际上是“思考默想”的意思，思考怎样让自己在孤独中得到升华。孤独的时候可以写诗，可以写文章，可以阅读喜欢的著作。我是喜欢热闹又欣赏孤独的人，大家可能不知道，我非常忙，但是我每个月都会有两到三天尽可能与世隔绝。所谓“与世隔绝”，就是从早上到晚上，不回一条短信，也不发一封e-mail，手机和电脑都放在一边，自己坐在那儿想事情，或者一个人在山里徒步、行走。为什么这样做？因为这样可以让心静下来，让感觉慢下来。</p>
+                    <footer>新东方教育科技集团董事长兼总裁 俞敏洪</footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="container">
+            <div class="row flex-box flex-wrap-wrap">
+                <div class="col-sm-4 flex-box flex-justify-center flex-align-center">
+                    <a href="hero-background-nature.jpg" class="fancybox" rel="gallery1" title="Hero Image Nature"><img class="img-responsive" src="assets/img/预告004.png"></a>
+                </div>
+                <div class="col-sm-4 flex-box flex-justify-center flex-align-center">
+                    <a href="hero-background-technology.jpg" class="fancybox" rel="gallery1" title="Hero Image Technology"><img class="img-responsive" src="assets/img/预告002.png"></a>
+                </div>
+                <div class="col-sm-4 flex-box flex-justify-center flex-align-center">
+                    <a href="hero-background-travel.jpg" class="fancybox" rel="gallery1" title="Hero Image Travel"><img class="img-responsive" src="assets/img/预告0628.png"></a>
+                </div>
+                <div class="col-sm-4 flex-box flex-justify-center flex-align-center">
+                    <a href="hero-background-food.jpg" class="fancybox" rel="gallery1" title="Hero Image Food"><img class="img-responsive" src="assets/img/预告003.png"></a>
+                </div>
+                <div class="col-sm-4 flex-box flex-justify-center flex-align-center">
+                    <a href="hero-background-music.jpg" class="fancybox" rel="gallery1" title="Hero Image Music"><img class="img-responsive" src="assets/img/预告001.png"></a>
+                </div>
+                <div class="col-sm-4 flex-box flex-justify-center flex-align-center">
+                    <a href="hero-background-photography.jpg" class="fancybox" rel="gallery1" title="Hero Image Photography"><img class="img-responsive" src="assets/img/预告0621.png"></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-md-12">
+                <h1 class="text-center text-success bg-primary hidden-sm hidden-md hidden-lg">移动端の彩蛋</h1></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+    <script src="assets/js/Basic-fancyBox-Gallery.js"></script>
+
+    
+</body>
+
+</html>
