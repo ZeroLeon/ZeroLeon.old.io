@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ZeroLeon.github.io</id>
     <title>ZeroPunchMan</title>
-    <updated>2019-06-16T09:23:34.080Z</updated>
+    <updated>2019-06-16T09:28:32.822Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ZeroLeon.github.io"/>
     <link rel="self" href="https://ZeroLeon.github.io/atom.xml"/>
@@ -12,8 +12,8 @@
     <rights>All rights reserved 2019, ZeroPunchMan</rights>
     <entry>
         <title type="html"><![CDATA[在 fastai 框架下使用 BERT 做中文文本分类]]></title>
-        <id>https://ZeroLeon.github.io/post/zai-fastai-kuang-jia-xia-shi-yong-bert-zuo-zhong-wen-wen-ben-fen-lei</id>
-        <link href="https://ZeroLeon.github.io/post/zai-fastai-kuang-jia-xia-shi-yong-bert-zuo-zhong-wen-wen-ben-fen-lei">
+        <id>https://ZeroLeon.github.io/post/fastai-bert</id>
+        <link href="https://ZeroLeon.github.io/post/fastai-bert">
         </link>
         <updated>2019-06-16T09:21:08.000Z</updated>
         <content type="html"><![CDATA[<p>动因
