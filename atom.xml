@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://ZeroLeon.github.io</id>
+    <title>ZeroPunchMan</title>
+    <updated>2019-06-16T09:23:34.080Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://ZeroLeon.github.io"/>
+    <link rel="self" href="https://ZeroLeon.github.io/atom.xml"/>
+    <subtitle>Go~</subtitle>
+    <logo>https://ZeroLeon.github.io/images/avatar.png</logo>
+    <icon>https://ZeroLeon.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2019, ZeroPunchMan</rights>
+    <entry>
+        <title type="html"><![CDATA[在 fastai 框架下使用 BERT 做中文文本分类]]></title>
+        <id>https://ZeroLeon.github.io/post/zai-fastai-kuang-jia-xia-shi-yong-bert-zuo-zhong-wen-wen-ben-fen-lei</id>
+        <link href="https://ZeroLeon.github.io/post/zai-fastai-kuang-jia-xia-shi-yong-bert-zuo-zhong-wen-wen-ben-fen-lei">
+        </link>
+        <updated>2019-06-16T09:21:08.000Z</updated>
+        <content type="html"><![CDATA[<p>动因
+最近正在学习深度学习框架 fastai，到了自然语言处理这部分想实践一下处理中文文本，遇到了不少困难。首先 fastai 的默认文本处理包是 spaCy，不支持中文（只有依赖 jieba 的分词），fastai 论坛上的 Language Model Zoo 里也没有可用的中文预训练模型，为了寻找可用的模型，就注意到了 BERT。</p>
+<p>谷歌的 BERT 是现在非常流行的语言模型，在 NLP 业界如雷贯耳，网上的英文文本样例很多，但中文文本的样例就凤毛麟角了，而 fastai 框架下的干脆就是零，无奈之下就自力更生吧。</p>
+<p>动脑
+在 fastai 框架下无法直接使用 BERT，从文档中 &quot;NLP Preprocessing&quot;这一节中寻找需要解决的问题。</p>
+<p>第一步是文本预处理，在 fastai 中需要做 Tokenization 和 Numericalization ，如果不使用默认的 Tokenizer 就需要定制，文档中这部分的说明：</p>
+<p>Customize the tokenizer：
+The tok_func must return an instance of BaseTokenizer
+定制的 Tokenizer 产生对应的 Vocab 。</p>
+<p>然后为了做文本分类，需要分类预训练模型，喂给模型的数据需要转换成 fastai 认识的 DataBunch 形式， 最后设置对应的损失函数开始训练。</p>
+<p>整理一下相应的步骤：</p>
+<p>定制 Tokenizer
+定制 Vocab
+配置BERT预训练模型与其参数
+将需要训练的数据转换成 fastai 接受的 TextDataBunch
+这里就需要强大的 pytorch-pretrained-bert 包出场了，它提供了 BERT 各种语言的模型，关键包含了中文：</p>
+<p>• bert-base-uncased: 12-layer, 768-hidden, 12-heads, 110M parameters
+• bert-large-uncased: 24-layer, 1024-hidden, 16-heads, 340M parameters
+• bert-base-cased: 12-layer, 768-hidden, 12-heads , 110M parameters
+• bert-large-cased: 24-layer, 1024-hidden, 16-heads, 340M parameters
+• bert-base-multilingual-uncased: (Orig, not recommended) 102 languages, 12-layer, 768-hidden, 12-heads, 110M parameters
+• bert-base-multilingual-cased: (New, recommended) 104 languages, 12-layer, 768-hidden, 12-heads, 110M parameters
+• bert-base-chinese: Chinese Simplified and Traditional, 12-layer, 768-hidden, 12-heads, 110M parameters
+模型中有重要的 BertTokenizer 以及对应的 Vocab，需要将之包装成 fastai 中的 BaseTokenizer 类。</p>
+<p>为了文本分类任务，这里需要引入的预训练模型是 BertForSequenceClassification：</p>
+<p>BertForSequenceClassification is a fine-tuning model that includes BertModel and a sequence-level (sequence or pair of sequences) classifier on top of the BertModel
+至此收集齐了任务要素，进入下一步实践环节。</p>
+<p>动手
+实践部分的代码我写了比较详细的注释，直接看可能会更清楚，可以点击这个链接，打开我 Github 上的 IPython Notebook 文件，代码中使用的数据集在这里。</p>
+<p>可以看到文件顶端的 Open in Colab 按钮，点击以后就能在 colab 里打开，依次执行就能复现结果。colab 升级了 GPU 以后训练速度有明显的提升，可以说是深度学习入门者的神器，要了解 colab 推荐王树义老师的文章《如何用 Google Colab 练 Python？》，我当时看了受益匪浅。</p>
+<p>实践中的一些关键点：</p>
+<p>• 引入 BERT 中文模型：</p>
+<p>from pytorch_pretrained_bert import BertTokenizer
+bert_tok = BertTokenizer.from_pretrained(‘bert-base-chinese’)
+• 数据集有缺失数据，会导致创建 DataBunch 失败，需要对数据集做预处理：</p>
+<p>df_htl.dropna(how='any', axis=0)
+• BERT 在 sequence 首尾有自己的特殊token [CLS] 和 [SEP] ，跟 fastai 的对应 token 有冲突，需要在创建 DataBunch 的时候去掉</p>
+<p>• 文本处理后的样例：</p>
+<p>• 虽然代码中用了 lr_find ，但时间所限并没有尝试多个学习率，而是使用了 BERT 原论文推荐的学习率 3e-5</p>
+<p>结果
+最终训练了一个轮次准确率达到 90% ，作为试水任务已经超出预期，BERT 确实强大。下一步准备使用更大的数据集做多标签分类，输出模型自动给文本打上情感标签，感觉会有比较有意思的应用场景。</p>
+<p>感谢
+《A Tutorial to Fine-Tuning BERT with Fast AI》 by keitakurita ，本文 idea 来源，代码基于这篇改动</p>
+<p>Jeremy Howard ，感谢他创建了 fast.ai</p>
+<p>Anne Marie ，上海 FAST.AI Study Group 的创办者，感谢这位可敬的法国老师</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello Gridea]]></title>
+        <id>https://ZeroLeon.github.io/post/hello-gridea</id>
+        <link href="https://ZeroLeon.github.io/post/hello-gridea">
+        </link>
+        <updated>2018-12-11T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+<!-- more -->
+<p><a href="https://github.com/getgridea/gridea">Github</a><br>
+<a href="http://hvenotes.fehey.com/">Gridea 主页</a><br>
+<a href="http://fehey.com/">示例网站</a></p>
+<h2 id="特性">特性👇</h2>
+<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
+<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
+<p>🏷️  你可以对文章进行标签分组</p>
+<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
+<p>💻  你可以在 <strong>𝖶𝗂𝗇𝖽𝗈𝗐𝗌</strong> 或 <strong>𝖬𝖺𝖼𝖮𝖲</strong> 设备上使用此客户端</p>
+<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
+<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
+<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
+<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
+<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
+<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前🏃</p>
+<p>未来，它一定会成为你离不开的伙伴</p>
+<p>尽情发挥你的才华吧！</p>
+<p>😘 Enjoy~</p>
+]]></content>
+    </entry>
+</feed>

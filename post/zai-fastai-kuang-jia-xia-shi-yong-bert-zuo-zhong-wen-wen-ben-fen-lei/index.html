@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>在 fastai 框架下使用 BERT 做中文文本分类 | ZeroPunchMan</title>
+<link rel="shortcut icon" href="https://ZeroLeon.github.io/favicon.ico?v=1560677011715">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://ZeroLeon.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://ZeroLeon.github.io">
+  <img class="avatar" src="https://ZeroLeon.github.io/images/avatar.png?v=1560677011715" alt="">
+  </a>
+  <h1 class="site-title">
+    ZeroPunchMan
+  </h1>
+  <p class="site-description">
+    Go~
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              在 fastai 框架下使用 BERT 做中文文本分类
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2019-06-16 ·
+              </time>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>动因
+最近正在学习深度学习框架 fastai，到了自然语言处理这部分想实践一下处理中文文本，遇到了不少困难。首先 fastai 的默认文本处理包是 spaCy，不支持中文（只有依赖 jieba 的分词），fastai 论坛上的 Language Model Zoo 里也没有可用的中文预训练模型，为了寻找可用的模型，就注意到了 BERT。</p>
+<p>谷歌的 BERT 是现在非常流行的语言模型，在 NLP 业界如雷贯耳，网上的英文文本样例很多，但中文文本的样例就凤毛麟角了，而 fastai 框架下的干脆就是零，无奈之下就自力更生吧。</p>
+<p>动脑
+在 fastai 框架下无法直接使用 BERT，从文档中 &quot;NLP Preprocessing&quot;这一节中寻找需要解决的问题。</p>
+<p>第一步是文本预处理，在 fastai 中需要做 Tokenization 和 Numericalization ，如果不使用默认的 Tokenizer 就需要定制，文档中这部分的说明：</p>
+<p>Customize the tokenizer：
+The tok_func must return an instance of BaseTokenizer
+定制的 Tokenizer 产生对应的 Vocab 。</p>
+<p>然后为了做文本分类，需要分类预训练模型，喂给模型的数据需要转换成 fastai 认识的 DataBunch 形式， 最后设置对应的损失函数开始训练。</p>
+<p>整理一下相应的步骤：</p>
+<p>定制 Tokenizer
+定制 Vocab
+配置BERT预训练模型与其参数
+将需要训练的数据转换成 fastai 接受的 TextDataBunch
+这里就需要强大的 pytorch-pretrained-bert 包出场了，它提供了 BERT 各种语言的模型，关键包含了中文：</p>
+<p>• bert-base-uncased: 12-layer, 768-hidden, 12-heads, 110M parameters
+• bert-large-uncased: 24-layer, 1024-hidden, 16-heads, 340M parameters
+• bert-base-cased: 12-layer, 768-hidden, 12-heads , 110M parameters
+• bert-large-cased: 24-layer, 1024-hidden, 16-heads, 340M parameters
+• bert-base-multilingual-uncased: (Orig, not recommended) 102 languages, 12-layer, 768-hidden, 12-heads, 110M parameters
+• bert-base-multilingual-cased: (New, recommended) 104 languages, 12-layer, 768-hidden, 12-heads, 110M parameters
+• bert-base-chinese: Chinese Simplified and Traditional, 12-layer, 768-hidden, 12-heads, 110M parameters
+模型中有重要的 BertTokenizer 以及对应的 Vocab，需要将之包装成 fastai 中的 BaseTokenizer 类。</p>
+<p>为了文本分类任务，这里需要引入的预训练模型是 BertForSequenceClassification：</p>
+<p>BertForSequenceClassification is a fine-tuning model that includes BertModel and a sequence-level (sequence or pair of sequences) classifier on top of the BertModel
+至此收集齐了任务要素，进入下一步实践环节。</p>
+<p>动手
+实践部分的代码我写了比较详细的注释，直接看可能会更清楚，可以点击这个链接，打开我 Github 上的 IPython Notebook 文件，代码中使用的数据集在这里。</p>
+<p>可以看到文件顶端的 Open in Colab 按钮，点击以后就能在 colab 里打开，依次执行就能复现结果。colab 升级了 GPU 以后训练速度有明显的提升，可以说是深度学习入门者的神器，要了解 colab 推荐王树义老师的文章《如何用 Google Colab 练 Python？》，我当时看了受益匪浅。</p>
+<p>实践中的一些关键点：</p>
+<p>• 引入 BERT 中文模型：</p>
+<p>from pytorch_pretrained_bert import BertTokenizer
+bert_tok = BertTokenizer.from_pretrained(‘bert-base-chinese’)
+• 数据集有缺失数据，会导致创建 DataBunch 失败，需要对数据集做预处理：</p>
+<p>df_htl.dropna(how='any', axis=0)
+• BERT 在 sequence 首尾有自己的特殊token [CLS] 和 [SEP] ，跟 fastai 的对应 token 有冲突，需要在创建 DataBunch 的时候去掉</p>
+<p>• 文本处理后的样例：</p>
+<p>• 虽然代码中用了 lr_find ，但时间所限并没有尝试多个学习率，而是使用了 BERT 原论文推荐的学习率 3e-5</p>
+<p>结果
+最终训练了一个轮次准确率达到 90% ，作为试水任务已经超出预期，BERT 确实强大。下一步准备使用更大的数据集做多标签分类，输出模型自动给文本打上情感标签，感觉会有比较有意思的应用场景。</p>
+<p>感谢
+《A Tutorial to Fine-Tuning BERT with Fast AI》 by keitakurita ，本文 idea 来源，代码基于这篇改动</p>
+<p>Jeremy Howard ，感谢他创建了 fast.ai</p>
+<p>Anne Marie ，上海 FAST.AI Study Group 的创办者，感谢这位可敬的法国老师</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://ZeroLeon.github.io/post/hello-gridea">
+              <h3 class="post-title">
+                Hello Gridea
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  LessWrong | 
+  <a class="rss" href="https://ZeroLeon.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
